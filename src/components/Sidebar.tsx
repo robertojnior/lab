@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 
 import { Lesson } from './Lesson'
+import { Loading } from './Loading'
 
 const LESSONS_QUERY = gql`
   query {
@@ -34,17 +35,19 @@ export function Sidebar() {
       </span>
 
       <div className="flex flex-col gap-8">
-        {!loading
-          ? data?.lessons.map((lesson) => (
-              <Lesson
-                key={lesson.id}
-                slug={lesson.slug}
-                title={lesson.title}
-                format={lesson.lessonType}
-                availableAt={new Date(lesson.availableAt)}
-              />
-            ))
-          : null}
+        {loading ? (
+          <Loading />
+        ) : (
+          data?.lessons.map((lesson) => (
+            <Lesson
+              key={lesson.id}
+              slug={lesson.slug}
+              title={lesson.title}
+              format={lesson.lessonType}
+              availableAt={new Date(lesson.availableAt)}
+            />
+          ))
+        )}
       </div>
     </aside>
   )
